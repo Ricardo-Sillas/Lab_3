@@ -14,7 +14,7 @@ class Node(object):
 
 ######################AVL Tree############################
 class avl_tree:
-    def __init__(self, root=None):
+    def __init__(self, root=None, height=-1):
         self.root = root
 
     def avl_search(self, data, cur):
@@ -265,20 +265,22 @@ class red_black_tree:
         else:
             self.rb_rotate_left(grandparent)
 
+
 # Getting the number of anagrams for a word in the avl tree
-def count_anagrams_avl(word, english_words, prefix=""):
-    global count
-    if len(word) <= 1:
-        if english_words.avl_search(prefix + word, english_words.root):
-            count = count + 1
-        else:
-            for i in range(len(word)):
-                cur = word[i: i + 1]
-                before = word[0: i]  # letters before cur
-                after = word[i + 1:]  # letters after cur
-                if cur not in before:  # Checks if cur rearranged has been created
-                    count_anagrams_avl(before + after, english_words, prefix + cur)
-        return count
+# def count_anagrams_avl(word, english_words, prefix=""):
+#     global count
+#     if len(word) <= 1:
+#         if english_words.avl_search(prefix + word, english_words.root):
+#             count = count + 1
+#             print(count)
+#         else:
+#             for i in range(len(word)):
+#                 cur = word[i: i + 1]
+#                 before = word[0: i]  # letters before cur
+#                 after = word[i + 1:]  # letters after cur
+#                 if cur not in before:  # Checks if cur rearranged has been created
+#                     count_anagrams_avl(before + after, english_words, prefix + cur)
+#     return count
 
 
 def most_anagrams_avl(english_words): # finds word with most anagrams in the file
@@ -299,39 +301,21 @@ def most_anagrams_avl(english_words): # finds word with most anagrams in the fil
     return 0
 
 
-
-def print_anagrams_avl(word, english_words, prefix = ""):
+def count_anagrams_avl(word, english_words, prefix = ""):
+    global count
+    a = []
+    num = 0
     if len(word) <= 1:
         if english_words.avl_search(prefix + word, english_words.root):
-            print(prefix + word)
+            count = count + 1
     else:
         for i in range(len(word)):
             cur = word[i: i + 1]
             before = word[0: i]
             after = word[i + 1:]
             if cur not in before:
-                print_anagrams_avl(before + after, english_words, prefix + cur)
-
-
-def print_anagrams_rb(word, english_words, prefix = ""):
-    if len(word) <= 1:
-        if english_words.rb_search(prefix + word, english_words.root):
-            print(prefix + word)
-    else:
-        for i in range(len(word)):
-            cur = word[i: i + 1]
-            before = word[0: i]
-            after = word[i + 1:]
-            if cur not in before:
-                print_anagrams_rb(before + after, english_words, prefix + cur)
-
-
-def read_file_avl():
-    file = open("test.txt", "r")
-    avl = avl_tree()
-    for single_line in file:
-        avl.avl_insertion(single_line.replace("\n", ""))
-    return avl
+                count_anagrams_avl(before + after, english_words, prefix + cur)
+    return count
 
 
 def print_anagrams_avl(word, english_words, prefix = ""):
@@ -340,7 +324,6 @@ def print_anagrams_avl(word, english_words, prefix = ""):
     if len(word) <= 1:
         if english_words.avl_search(prefix + word, english_words.root):
             print(prefix + word)
-            a.append(prefix + word)
     else:
         for i in range(len(word)):
             cur = word[i: i + 1]
@@ -349,6 +332,7 @@ def print_anagrams_avl(word, english_words, prefix = ""):
             if cur not in before:
                 print_anagrams_avl(before + after, english_words, prefix + cur)
     return num + len(a)
+
 
 
 def print_anagrams_rb(word, english_words, prefix = ""):
@@ -363,6 +347,14 @@ def print_anagrams_rb(word, english_words, prefix = ""):
             if cur not in before:
                 print_anagrams_rb(before + after, english_words, prefix + cur)
     return count
+
+
+def read_file_avl():
+    file = open("test.txt", "r")
+    avl = avl_tree()
+    for single_line in file:
+        avl.avl_insertion(single_line.replace("\n", ""))
+    return avl
 
 
 def read_file_rb():
@@ -385,7 +377,7 @@ def main():
         # english_words.print_tree(english_words.root)
         # print("Anagrams:)
         print(count_anagrams_avl(users_word, english_words))
-        print(print_anagrams_avl(users_word, english_words))
+        print_anagrams_avl(users_word, english_words)
     elif users_tree.upper() == "RB":
         print("Please enter a word")
         users_word = input()
@@ -393,9 +385,18 @@ def main():
         english_words = read_file_rb()
         # english_words.print_tree(english_words.root)
         # print("Anagrams: ")
-        print(print_anagrams_rb(users_word, english_words))
+        print_anagrams_rb(users_word, english_words)
     else:
         print("That is not a valid input, please try again.")
+    print("Would you like to see the words with the most anagrams?")
+    print('Please enter "yes" or "no".')
+    users_ans = input()
+    if users_ans.lower() == "yes":
+        english_words = read_file_avl()
+        print("One of the word with the most anagram is:")
+        most_anagrams_avl(english_words)
+    else:
+        print("Good bye.")
 
 
 main()
