@@ -218,7 +218,6 @@ class red_black_tree:
                     cur = None
                 else:
                     cur = cur.right
-        # node = node.parent
 
     def rb_get_grandparent(self, node):
         if node.parent is None:
@@ -266,24 +265,8 @@ class red_black_tree:
             self.rb_rotate_left(grandparent)
 
 
-# Getting the number of anagrams for a word in the avl tree
-# def count_anagrams_avl(word, english_words, prefix=""):
-#     global count
-#     if len(word) <= 1:
-#         if english_words.avl_search(prefix + word, english_words.root):
-#             count = count + 1
-#             print(count)
-#         else:
-#             for i in range(len(word)):
-#                 cur = word[i: i + 1]
-#                 before = word[0: i]  # letters before cur
-#                 after = word[i + 1:]  # letters after cur
-#                 if cur not in before:  # Checks if cur rearranged has been created
-#                     count_anagrams_avl(before + after, english_words, prefix + cur)
-#     return count
-
-
-def most_anagrams_avl(english_words): # finds word with most anagrams in the file
+# Finds the word with the most anagrams in the file
+def most_anagrams_avl(english_words):
     file = open("test.txt", "r")
     biggest = 0
     word = ""
